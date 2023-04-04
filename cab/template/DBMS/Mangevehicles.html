@@ -1,0 +1,169 @@
+
+<!DOCTYPE html>
+{% load static%}
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+    
+    <link rel="stylesheet" type="text/css" href="{% static 'css/vehicles.css' %}">
+    <!-- Boxicons CDN Link -->
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   </head>
+<body>
+  <div class="sidebar">
+    <div class="logo-details">
+      <i class='bx bxl-c-plus-plus'></i>
+      <span class="logo_name">Ola</span>
+    </div>
+      <ul class="nav-links">
+        <li>
+          <a href="#" class="active">
+            <i class='bx bx-grid-alt' ></i>
+            <form action="{% url 'driver' %}" method="post">{% csrf_token %}
+              <input type="hidden" name="username" value = {{username.0}} >
+            <span class="links_name"><button type="submit" >Dashboard</button></span>
+            </form>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <i class='bx bx-box' ></i>
+            <form action="{% url 'booking' %}" method="post">{% csrf_token %}
+              <input type="hidden" name="username" value = {{username.0}} >
+            <span class="links_name"><button type="submit" >Bookings</button></span>
+            </form>
+          </a>
+        </li>
+        <li>
+            <a href="#" class="active">
+              <i class='bx bx-grid-alt' ></i>
+              <form action="{% url 'previoustrips'%}" method="post">{% csrf_token %}
+                <input type="hidden" name="username" value = {{username.0}} >
+              <span class="links_name"><button type="submit" >Trip details</button></span>
+              </form>
+            </a>
+          </li>
+        <li>
+          <a href="#" class="active">
+            <i class='bx bx-grid-alt' ></i>
+            <span class="links_name">Manage Vehicles</span>
+          </a>
+        </li>
+        <li>        
+          <a href="#">
+            <i class='bx bx-cog' ></i>
+            <span class="links_name">
+              <form action="{% url 'editdriver' %}" method="post">{% csrf_token %}
+                <input type="hidden" name="username" value={{username.0}} >
+              <button type="submit" >Edit Driver Details</button>
+              </form></span>
+          </a>
+        </li>
+        <li class="log_out">
+          <a href="#">
+            <i class='bx bx-log-out'></i>
+            <form action="{% url 'logout'%}" method="post">{% csrf_token %}
+              <span class="links_name">
+                <button type="submit" >Log out
+                </button>
+              </span>
+            </form>
+          </a>
+        </li>
+      </ul>
+  </div>
+  <section class="home-section">
+    <nav>
+      <div class="sidebar-button">
+        <i class='bx bx-menu sidebarBtn'></i>
+        <span class="dashboard">Dashboard</span>
+      </div>
+      <div class="profile-details">
+        <!--<img src="images/profile.jpg" alt="">-->
+        <span class="admin_name">{{Name.0}}</span>
+        <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" class="rounded float-right">
+      </div>
+    </nav>
+
+    <div class="home-content">
+      <!-- <div class="overview-boxes">
+        <div class="box">
+          <button type="button" id ="driver" class="btn btn-outline-primary" style="padding-left: 2.5rem; padding-right: 2.5rem;">
+           MINI
+        </button>
+        </div>
+        <div class="box">
+          <div class="right-side">
+            <div class="box-topic"><button type="button" id ="driver" class="btn btn-outline-primary" style="padding-left: 2.5rem; padding-right: 2.5rem;">
+                SEDAN
+             </button></div>
+          </div>
+          <img src="https://static.vecteezy.com/system/resources/thumbnails/000/643/002/small/illust58-215.jpg" width="50" height="50">
+        </div>
+        <div class="box">
+          <div class="right-side">
+            <div class="box-topic"><button type="button" id ="driver" class="btn btn-outline-primary" style="padding-left: 2.5rem; padding-right: 2.5rem;">
+                SUV
+             </button></div>
+          </div>
+        </div>
+      </div> -->
+
+      <div class="sales-boxes">
+        <div class="recent-sales box">
+          <div class="title">Registered Vehicles</div>
+          <div class="sales-details">
+            <ul class="details">
+              <li class="topic">LICENSE NUMBER</li>
+              {% for i in car_no %}
+              <li><a href="#">{{i}}</a></li>
+              {% endfor %}
+            </ul>
+            <ul class="details">
+            <li class="topic">Type</li>
+            {% for j in car_model %}
+            <li><a href="#">{{j}}</a></li>
+            {% endfor %}
+            
+          </ul>
+          <ul class="details">
+            <li class="topic">Status</li>
+            {% for i in car_no %}
+            <li><a href="#">Registered</a></li>
+            {% endfor %}
+            
+          </ul>
+          <!-- <ul class="details">
+            <li class="topic">Want to use </li>
+            {% for i in car_no %}
+            <li><input type="checkbox" name="choose" ></li>
+            {% endfor %}
+          </ul> -->
+          </div>
+
+          <!-- {% for i in car_no %}
+          <form method="post" action="{% url 'Mangevehicles' %}">{% csrf_token %}
+            <button type="submit">Choose</button>
+          </form>
+          {% endfor %}           -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+   let sidebar = document.querySelector(".sidebar");
+let sidebarBtn = document.querySelector(".sidebarBtn");
+sidebarBtn.onclick = function() {
+  sidebar.classList.toggle("active");
+  if(sidebar.classList.contains("active")){
+  sidebarBtn.classList.replace("bx-menu" ,"bx-menu-alt-right");
+}else
+  sidebarBtn.classList.replace("bx-menu-alt-right", "bx-menu");
+}
+ </script>
+
+</body>
+</html>
+

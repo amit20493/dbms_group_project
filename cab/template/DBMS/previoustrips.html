@@ -1,0 +1,150 @@
+
+<!DOCTYPE html>
+{% load static%}
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+    
+    <link rel="stylesheet" type="text/css" href="{% static 'css/customer.css' %}">
+    <!-- Boxicons CDN Link -->
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   </head>
+<body>
+  <div class="sidebar">
+    <div class="logo-details">
+      <i class='bx bxl-c-plus-plus'></i>
+      <span class="logo_name">Ola</span>
+    </div>
+      <ul class="nav-links">
+        <li>
+          <a href="#" class="active">
+            <i class='bx bx-grid-alt' ></i>
+            {% if usertype == 0 %}
+            <form action="{% url 'driver'%}" method="post">{% csrf_token %}
+              <input type="hidden" name="username" value = {{username}} >
+              <input type="hidden" name="usertype" value= 0 >
+            <span class="links_name"><button type="submit" >Dashboard</button></span>
+            </form>
+            {% else %}
+            <form action="{% url 'customer'%}" method="post">{% csrf_token %}
+              <input type="hidden" name="username" value = {{username}} >
+              <input type="hidden" name="usertype" value= 1 >
+            <span class="links_name"><button type="submit" >Dashboard</button></span>
+            </form>
+            {% endif %}
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <i class='bx bx-box' ></i>
+            <span class="links_name">Previous Trips</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <i class='bx bx-cog' ></i>
+              {% if usertype == 0 %}
+              <span class="links_name"></span>
+              <form action="{% url 'editdriver' %}" method="post">{% csrf_token %}
+                <input type="hidden" name="username" value={{username}} >
+              <button type="submit" >Edit Details</button>
+              </form></span>
+              {% else %}
+              <span class="links_name">
+              <form action="{% url 'editpassenger' %}" method="post">{% csrf_token %}
+                <input type="hidden" name="username" value={{username}} >
+              <button type="submit" >Edit Details</button>
+              </form></span>
+              {% endif %}
+          </a>
+        </li>
+        <li class="log_out">
+          <a href="#">
+            <i class='bx bx-log-out'></i>
+            <form action="{% url 'logout'%}" method="post">{% csrf_token %}
+              <span class="links_name"><button type="submit" >Log out</button></span></form>
+          </a>
+        </li>
+      </ul>
+  </div>
+  <section class="home-section">
+    <nav>
+      <div class="sidebar-button">
+        <i class='bx bx-menu sidebarBtn'></i>
+        <span class="dashboard">Dashboard</span>
+      </div>
+      <div class="profile-details">
+        <!--<img src="images/profile.jpg" alt="">-->
+        <span class="admin_name">{{displayname}}</span>
+        <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" class="rounded float-right">
+      </div>
+    </nav>
+
+    <div class="home-content">
+      <div class="sales-boxes">
+        <div class="recent-sales box">
+          <div class="title">Previous Trips</div>
+          {% if Trip_Date_Day|length > 0 %}
+          <div class="sales-details">
+            <ul class="details">
+              <li class="topic">Date</li>
+              {% for i in Trip_Date_Day %}
+              <li><a href="#">{{ i|date:"d M Y" }}</a></li>
+              {% endfor %}
+            </ul>
+            <ul class="details">
+            <li class="topic">Pickup Location</li>
+            {% for i in Pickup_Location %}
+            <li><a href="#">{{i}}</a></li>
+            {% endfor %}
+          </ul>
+          <ul class="details">
+            <li class="topic">Drop Location</li>
+            {% for i in Drop_Location %}
+            <li><a href="#">{{i}}</a></li>
+            {% endfor %}
+            <!-- <li><a href="#">Pending</a></li>
+            <li><a href="#">Returned</a></li>
+            <li><a href="#">Delivered</a></li> -->
+          </ul>
+          <ul class="details">
+            <li class="topic">Amount</li>
+            {% for i in Payment_Amount %}
+            <li><a href="#">{{i}}</a></li>
+            {% endfor %}
+          </ul>
+          <ul class="details">
+            <li class="topic">Payment ID</li>
+            {% for i in Payment_ID %}
+            <li><a href="#">{{i}}</a></li>
+            {% endfor %}
+          </ul>
+          </div>
+          {% else %}
+          <div class="sales-details">
+          <ul class="details">
+            <li class="topic">No Trip History Available</li>
+            <li><a href="#">Once you complete a ride, history will become available</a></li>
+          </ul>
+          </div>
+          {% endif %}
+        </div>
+    </div>
+  </section>
+
+  <script>
+   let sidebar = document.querySelector(".sidebar");
+let sidebarBtn = document.querySelector(".sidebarBtn");
+sidebarBtn.onclick = function() {
+  sidebar.classList.toggle("active");
+  if(sidebar.classList.contains("active")){
+  sidebarBtn.classList.replace("bx-menu" ,"bx-menu-alt-right");
+}else
+  sidebarBtn.classList.replace("bx-menu-alt-right", "bx-menu");
+}
+ </script>
+
+</body>
+</html>
+

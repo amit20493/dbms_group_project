@@ -1,0 +1,181 @@
+
+<!DOCTYPE html>
+{% load static%}
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+    
+    <link rel="stylesheet" type="text/css" href="{% static 'css/booking.css' %}" >
+    <!-- Boxicons CDN Link -->
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   </head>
+<body>
+
+  <div class="sidebar">
+    <div class="logo-details">
+      <i class='bx bxl-c-plus-plus'></i>
+      <span class="logo_name">Ola</span>
+    </div>
+      <ul class="nav-links">
+        <li>
+          <a href="#" class="active">
+            <i class='bx bx-grid-alt' ></i>
+            {% if usertype.0 == 0 %}
+            <form action="{% url 'driver'%}" method="post">{% csrf_token %}
+              <input type="hidden" name="username" value = {{username.0}} >
+              <input type="hidden" name="usertype" value= 0 >
+            <span class="links_name"><button type="submit" >Dashboard</button></span>
+            </form>
+            {% else %}
+            <form action="{% url 'customer'%}" method="post">{% csrf_token %}
+              <input type="hidden" name="username" value = {{username.0}} >
+              <input type="hidden" name="usertype" value= 1 >
+            <span class="links_name"><button type="submit" >Dashboard</button></span>
+            </form>
+            {% endif %}
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <i class='bx bx-box' ></i>
+            <span class="links_name">
+              <form method="POST" action="{% url 'previoustrips' %}">{% csrf_token %}
+                <input type="hidden" name="username" value= {{username.0}} >
+              <button type = "submit" >Previous Trips</button>
+              </form>
+            </span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <i class='bx bx-cog' ></i>
+            {% if usertype.0 == 0 %}
+              <span class="links_name"></span>
+              <form action="{% url 'editdriver' %}" method="post">{% csrf_token %}
+                <input type="hidden" name="username" value={{username.0}} >
+              <button type="submit" >Edit Details</button>
+              </form></span>
+              {% else %}
+              <span class="links_name">
+              <form action="{% url 'editpassenger' %}" method="post">{% csrf_token %}
+                <input type="hidden" name="username" value={{username.0}} >
+              <button type="submit" >Edit Details</button>
+              </form></span>
+              {% endif %}
+          </a>
+        </li>
+        <li class="log_out">
+          <a href="#">
+            <i class='bx bx-log-out'></i>
+            <span class="links_name">
+              <form action="{% url 'logout'%}" method="post">{% csrf_token %}
+                <button type="submit" >Log out</button>
+              </form>
+            </span>
+          </a>
+        </li>
+      </ul>
+  </div>
+  <section class="home-section">
+    <nav>
+      <div class="sidebar-button">
+        <i class='bx bx-menu sidebarBtn'></i>
+        <span class="dashboard">Booking</span>
+      </div>
+      <div class="profile-details">
+        <!--<img src="images/profile.jpg" alt="">-->
+        <span class="admin_name">{{Name.0}}</span>
+        <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" class="rounded float-right">
+      </div>
+    </nav>
+    <div class="home-content">
+      {%if status.0 != 'TRUE'%}
+        <div class="overview-boxes">
+          <div class="box" >
+            {% if progress == 1 %}
+              <div class="form-group">
+                <label >Request in Progress</label>
+                </div>
+            {% else %}
+            <form method="post" action="{% url 'bookingrequest' %}">
+              {% csrf_token %}
+              <input type="hidden" name="username" value= {{username.0}} >
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Pickup Location</label>
+                  <input type="text" name="pickup_location" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter pickup location">
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputPassword1">Drop Location</label>
+                  <input type="text" name="drop_location" class="form-control" id="exampleInputPassword1" placeholder="Enter drop location">
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </form>
+              
+              {% endif %}
+          </div>
+        </div>
+        {% else %}
+        <div class="top-sales box">
+          <div class="title">Current status</div>
+          <ul class="top-sales-details">
+            <li>
+            <a href="#">
+              <!--<img src="images/sunglasses.jpg" alt="">-->
+              <span class="product">Pickup Location</span>
+            </a>
+            <span class="price">{{Pickup_Location.0}}</span>
+          </li>
+          <li>
+            <a href="#">
+               <!--<img src="images/jeans.jpg" alt="">-->
+              <span class="product">Drop Location</span>
+            </a>
+            <span class="price">{{Drop_Location.0}}</span>
+          </li>
+          <li>
+            <a href="#">
+             <!-- <img src="images/nike.jpg" alt="">-->
+              <span class="product">Driver Name</span>
+            </a>
+            <span class="price">{{RefName.0}}</span>
+          </li>
+          <li>
+            <a href="#">
+              <!--<img src="images/scarves.jpg" alt="">-->
+              <span class="product">Car</span>
+            </a>
+            <span class="price">{{contactno.0}}</span>
+          </li>
+          {% if Driver_Car_Number %}
+          <li>
+            <a href="#">
+              <!--<img src="images/blueBag.jpg" alt="">-->
+              <span class="product">Car number</span>
+            </a>
+            <span class="price">{{Driver_Car_Number.0}}</span>
+          </li>
+          {% endif %}
+          </ul>
+        </div>
+        {% endif %}
+    </div>
+  </section>
+  
+
+  <script>
+   let sidebar = document.querySelector(".sidebar");
+let sidebarBtn = document.querySelector(".sidebarBtn");
+sidebarBtn.onclick = function() {
+  sidebar.classList.toggle("active");
+  if(sidebar.classList.contains("active")){
+  sidebarBtn.classList.replace("bx-menu" ,"bx-menu-alt-right");
+}else
+  sidebarBtn.classList.replace("bx-menu-alt-right", "bx-menu");
+}
+ </script>
+
+
+</body>
+</html>
+
